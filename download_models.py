@@ -4,8 +4,8 @@ import gdown
 MODEL_DIR = "models"
 
 MODELS = {
-    "best_model.pth": "1bqk-FG1e-SDNgvfJeFLVeexvsEUFRB1U",
-    "best_branchB_final.pth": "1EolEgPnn3io2KZHMbtqAa50gysx6P_HT"
+    "best_model.pth": "1EolEgPnn3io2KZHMbtqAa50gysx6P_HT",
+    "best_branchB_final.pth": "1bqk-FG1e-SDNgvfJeFLVeexvsEUFRB1U"
 }
 
 def download_models():
