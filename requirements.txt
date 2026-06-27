@@ -1,0 +1,10 @@
+streamlit
+torch
+torchvision
+timm
+transformers
+pillow
+numpy
+matplotlib
+opencv-python
+grad-cam

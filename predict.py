@@ -1,0 +1,80 @@
+import torch
+import timm
+import torch.nn.functional as F
+
+from utils import device, LABELS
+
+
+# -------------------------------------------------
+# Model Paths
+# -------------------------------------------------
+
+BRANCH_A_PATH = "models/best_model.pth"
+BRANCH_B_PATH = "models/best_branchB_final.pth"
+
+
+# -------------------------------------------------
+# Load EfficientNet
+# -------------------------------------------------
+
+def load_model(model_path):
+
+    model = timm.create_model(
+        "efficientnet_b4",
+        pretrained=False,
+        num_classes=2
+    )
+    import os
+    print("Loading:", model_path)
+    print("Exists:", os.path.exists(model_path))
+    print("Size:", os.path.getsize(model_path))
+
+    checkpoint = torch.load(
+        model_path,
+        map_location=device
+    )
+
+    # Branch A checkpoint
+    if "model_state_dict" in checkpoint:
+        model.load_state_dict(checkpoint["model_state_dict"])
+
+    # Branch B checkpoint
+    else:
+        model.load_state_dict(checkpoint)
+
+    model.to(device)
+    model.eval()
+
+    return model
+
+
+# -------------------------------------------------
+# Load Models
+# -------------------------------------------------
+
+branchA = load_model(BRANCH_A_PATH)
+branchB = load_model(BRANCH_B_PATH)
+
+
+# -------------------------------------------------
+# Prediction Function
+# -------------------------------------------------
+
+def predict(model, input_tensor):
+
+    with torch.no_grad():
+
+        output = model(input_tensor)
+
+        probabilities = F.softmax(output, dim=1)
+
+        confidence, prediction = torch.max(
+            probabilities,
+            dim=1
+        )
+
+    return {
+        "prediction": LABELS[prediction.item()],
+        "confidence": confidence.item(),
+        "class_index": prediction.item()
+    }
