@@ -8,7 +8,6 @@ MODELS = {
     "best_branchB_final.pth": "1EolEgPnn3io2KZHMbtqAa50gysx6P_HT"
 }
 
-
 def download_models():
 
     os.makedirs(MODEL_DIR, exist_ok=True)
@@ -18,26 +17,17 @@ def download_models():
         destination = os.path.join(MODEL_DIR, filename)
 
         if os.path.exists(destination):
-            print(f"✓ {filename} already exists.")
+            print(f"{filename} already exists.")
             continue
 
         print(f"Downloading {filename}...")
 
         url = f"https://drive.google.com/uc?id={file_id}"
 
-        try:
-            gdown.download(
-                url=url,
-                output=destination,
-                quiet=False,
-                fuzzy=True
-            )
-
-            print(f"✓ {filename} downloaded successfully.")
-
-        except Exception as e:
-            raise RuntimeError(
-                f"Failed to download {filename}\n{e}"
-            )
+        gdown.download(
+            url,
+            destination,
+            quiet=False
+        )
 
 download_models()
