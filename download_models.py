@@ -23,6 +23,8 @@ def download_models():
         print(f"Downloading {filename}...")
 
         url = f"https://drive.google.com/uc?id={file_id}"
+        print("Filename :", filename)
+        print("Google Drive ID :", file_id)
 
         gdown.download(
             url,
