@@ -1,3 +1,6 @@
+from download_models import download_models
+
+download_models()
 import torch
 import timm
 import torch.nn.functional as F
