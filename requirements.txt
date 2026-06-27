@@ -6,6 +6,6 @@ transformers
 pillow
 numpy
 matplotlib
-opencv-python
+opencv-python-headless
 grad-cam
 gdown
