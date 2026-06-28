@@ -1,6 +1,6 @@
-from download_models import download_models
+#from download_models import download_models
 
-download_models()
+#download_models()
 import torch
 import timm
 import torch.nn.functional as F
@@ -14,6 +14,10 @@ from utils import device, LABELS
 
 BRANCH_A_PATH = "models/best_model.pth"
 BRANCH_B_PATH = "models/best_branchB_final.pth"
+print("=" * 60)
+print("BRANCH A PATH:", BRANCH_A_PATH)
+print("BRANCH B PATH:", BRANCH_B_PATH)
+print("=" * 60)
 
 
 # -------------------------------------------------
@@ -32,9 +36,10 @@ def load_model(model_path):
     print("Exists:", os.path.exists(model_path))
     print("Size:", os.path.getsize(model_path))
 
-    checkpoint = torch.load(
+    checkpoint = torch.load (
         model_path,
         map_location=device
+       
     )
 
     # Branch A checkpoint
