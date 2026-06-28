@@ -1,9 +1,15 @@
-#from download_models import download_models
+from download_models import download_models
 import os
+
+# -----------------------------------------
+# Download models first
+# -----------------------------------------
+
+download_models()
 
 print("Files in models folder:")
 print(os.listdir("models"))
-#download_models()
+
 import torch
 import timm
 import torch.nn.functional as F
@@ -17,6 +23,7 @@ from utils import device, LABELS
 
 BRANCH_A_PATH = "models/best_model.pth"
 BRANCH_B_PATH = "models/best_branchB_final.pth"
+
 print("=" * 60)
 print("BRANCH A PATH:", BRANCH_A_PATH)
 print("BRANCH B PATH:", BRANCH_B_PATH)
@@ -34,22 +41,23 @@ def load_model(model_path):
         pretrained=False,
         num_classes=2
     )
-    import os
+
     print("Loading:", model_path)
     print("Exists:", os.path.exists(model_path))
+
+    if not os.path.exists(model_path):
+        raise FileNotFoundError(f"{model_path} not found!")
+
     print("Size:", os.path.getsize(model_path))
 
-    checkpoint = torch.load (
+    checkpoint = torch.load(
         model_path,
         map_location=device
-       
     )
 
     # Branch A checkpoint
-    if "model_state_dict" in checkpoint:
+    if isinstance(checkpoint, dict) and "model_state_dict" in checkpoint:
         model.load_state_dict(checkpoint["model_state_dict"])
-
-    # Branch B checkpoint
     else:
         model.load_state_dict(checkpoint)
 

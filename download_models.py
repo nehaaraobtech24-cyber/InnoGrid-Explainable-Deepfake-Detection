@@ -64,4 +64,3 @@ def download_models():
     print("=" * 60)
 
 
-download_models()
