@@ -1,5 +1,8 @@
 #from download_models import download_models
+import os
 
+print("Files in models folder:")
+print(os.listdir("models"))
 #download_models()
 import torch
 import timm
