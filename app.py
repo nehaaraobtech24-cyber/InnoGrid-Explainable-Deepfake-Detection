@@ -1,7 +1,10 @@
 import streamlit as st
-from PIL import Image
+
+st.set_page_config(page_title="Upload Test")
 
 st.title("Upload Test")
+
+st.write("App Loaded Successfully")
 
 uploaded_file = st.file_uploader(
     "Upload Image",
@@ -9,6 +12,6 @@ uploaded_file = st.file_uploader(
 )
 
 if uploaded_file is not None:
-    image = Image.open(uploaded_file)
-    st.success("Image received!")
-    st.image(image)
+    st.success("File received!")
+    st.write(uploaded_file.name)
+    st.write(uploaded_file.size)
