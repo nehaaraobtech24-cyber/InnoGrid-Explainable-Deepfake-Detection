@@ -7,8 +7,7 @@ import os
 
 download_models()
 
-print("Files in models folder:")
-print(os.listdir("models"))
+
 
 import torch
 import timm

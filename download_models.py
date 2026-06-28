@@ -1,12 +1,14 @@
 import os
-import gdown
+from huggingface_hub import hf_hub_download
 
 MODEL_DIR = "models"
 
-MODELS = {
-    "best_model.pth": "1EolEgPnn3io2KZHMbtqAa50gysx6P_HT",
-    "best_branchB_final.pth": "1bqk-FG1e-SDNgvfJeFLVeexvsEUFRB1U"
-}
+REPO_ID = "CarrotSalad/innogrid-models"
+
+MODELS = [
+    "best_model.pth",
+    "best_branchB_final.pth"
+]
 
 
 def download_models():
@@ -14,53 +16,31 @@ def download_models():
     os.makedirs(MODEL_DIR, exist_ok=True)
 
     print("=" * 60)
-    print("Downloading models...")
-    print("Current directory:", os.getcwd())
-    print("Models folder:", os.path.abspath(MODEL_DIR))
+    print("Downloading models from Hugging Face...")
     print("=" * 60)
 
-    for filename, file_id in MODELS.items():
+    for filename in MODELS:
 
         destination = os.path.join(MODEL_DIR, filename)
 
         if os.path.exists(destination):
             print(f"{filename} already exists.")
-            print(f"Size: {os.path.getsize(destination)} bytes")
             continue
 
-        print(f"\nDownloading {filename}")
-        print(f"Google Drive ID: {file_id}")
-
-        url = f"https://drive.google.com/uc?id={file_id}"
-
-        output = gdown.download(
-            url=url,
-            output=destination,
-            quiet=False,
-            fuzzy=True
+        downloaded_file = hf_hub_download(
+            repo_id=REPO_ID,
+            filename=filename,
+            local_dir=MODEL_DIR,
+            local_dir_use_symlinks=False
         )
 
-        print("gdown returned:", output)
+        print("Downloaded:", downloaded_file)
 
         if not os.path.exists(destination):
-            raise RuntimeError(
-                f"{filename} was NOT downloaded."
-            )
+            raise RuntimeError(f"{filename} failed to download.")
 
-        size = os.path.getsize(destination)
-
-        print(f"{filename} downloaded successfully.")
-        print(f"Size: {size} bytes")
-
-        if size < 100000:
-            raise RuntimeError(
-                f"{filename} looks invalid (only {size} bytes). "
-                "Google Drive probably returned an HTML page instead of the model."
-            )
+        print(filename, "downloaded successfully.")
 
     print("=" * 60)
-    print("Final contents of models folder:")
-    print(os.listdir(MODEL_DIR))
+    print("Done downloading models.")
     print("=" * 60)
-
-

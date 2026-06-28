@@ -8,4 +8,4 @@ numpy
 matplotlib
 opencv-python-headless
 grad-cam
-gdown
+huggingface_hub
