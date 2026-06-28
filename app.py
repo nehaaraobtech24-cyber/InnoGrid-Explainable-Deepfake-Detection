@@ -33,18 +33,29 @@ uploaded_file = st.file_uploader(
 
 if uploaded_file:
 
+    st.write("✅ Step 1 - File uploaded")
+
     image = load_image(uploaded_file)
+
+    st.write("✅ Step 2 - Image loaded")
+
     input_tensor = preprocess_image(image)
+
+    st.write("✅ Step 3 - Image preprocessed")
 
     st.image(image, caption="Uploaded Image", width=350)
 
-    # -----------------------------------------
-    # Predictions
-    # -----------------------------------------
-
     branchA_result = predict(branchA, input_tensor)
+
+    st.write("✅ Step 4 - Branch A done")
+
     branchB_result = predict(branchB, input_tensor)
+
+    st.write("✅ Step 5 - Branch B done")
+
     clip_result = clip_predict(image)
+
+    st.write("✅ Step 6 - CLIP done")
 
     fusion_result = fusion_prediction(
         branchA_result,
@@ -52,15 +63,15 @@ if uploaded_file:
         clip_result
     )
 
+    st.write("✅ Step 7 - Fusion done")
+
     method_result = generation_method(
         branchA_result,
         branchB_result,
         fusion_result
     )
 
-    # -----------------------------------------
-    # GradCAM
-    # -----------------------------------------
+    st.write("✅ Step 8 - Generation method done")
 
     heatmapA = generate_gradcam(
         branchA,
@@ -68,11 +79,15 @@ if uploaded_file:
         input_tensor
     )
 
+    st.write("✅ Step 9 - GradCAM A done")
+
     heatmapB = generate_gradcam(
         branchB,
         image,
         input_tensor
     )
+
+    st.write("✅ Step 10 - GradCAM B done")
 
     # -----------------------------------------
     # Branch Results
@@ -108,10 +123,6 @@ if uploaded_file:
 
         st.image(heatmapB)
 
-    # -----------------------------------------
-    # CLIP
-    # -----------------------------------------
-
     st.divider()
 
     st.subheader("CLIP Semantic Verification")
@@ -128,10 +139,6 @@ if uploaded_file:
         f"Fake Similarity: **{clip_result['fake_score']*100:.2f}%**"
     )
 
-    # -----------------------------------------
-    # Fusion
-    # -----------------------------------------
-
     st.divider()
 
     st.subheader("Fusion Engine")
@@ -144,10 +151,6 @@ if uploaded_file:
         f"Fusion Confidence: "
         f"**{fusion_result['confidence']*100:.2f}%**"
     )
-
-    # -----------------------------------------
-    # Generation Method
-    # -----------------------------------------
 
     st.divider()
 
